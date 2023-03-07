@@ -18,6 +18,21 @@ type Book record {|
     string id;
 |};
 
+type RiskResponse record {
+boolean hasRisk;
+};
+
+type RiskRequest record {
+string ip;
+};
+
+type ipGeolocationResp record {
+string ip;
+string country_code2;
+};
+
+final string geoApiKey = "3e18b946e2904a5687415e30a5485d76";
+
 map<Book> books = {};
 
 service /readinglist on new http:Listener(9090) {
@@ -37,3 +52,20 @@ service /readinglist on new http:Listener(9090) {
         return {};
     }
 }
+
+
+service / on new http:Listener(8090) {
+    resource function post risk(@http:Payload RiskRequest req) returns RiskResponse|error? {
+
+         string ip = req.ip;
+         http:Client ipGeolocation = check new ("https://api.ipgeolocation.io");
+         ipGeolocationResp geoResponse = check ipGeolocation->get(string `/ipgeo?apiKey=${geoApiKey}&ip=${ip}&fields=country_code2`);
+
+         RiskResponse resp = {
+              // hasRisk is true if the country code of the IP address is not the specified country code.
+              hasRisk: geoResponse.country_code2 != "<Specify a country code of your choice>"
+         };
+         return resp;
+    }
+}
+
