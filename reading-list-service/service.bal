@@ -47,7 +47,7 @@ service /readinglist on new http:Listener(9090) {
         Book[] bookArray = books.toArray();
         http:Response response = new;
         response.setJsonPayload(bookArray);
-        response.statusCode = http:OK.code;
+        response.statusCode = 200;
         return response;
     }
 
