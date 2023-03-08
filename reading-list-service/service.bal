@@ -44,7 +44,7 @@ service /readinglist on new http:Listener(9090) {
     resource function post books(@http:Payload BookItem newBook) returns record {|*http:Ok;|}|error? {
         string bookId = uuid:createType1AsString();
         books[bookId] = {...newBook, id: bookId};
-        return {};
+        return newBook;
     }
 
     resource function delete books(string id) returns record {|*http:Ok;|}|error? {
@@ -54,7 +54,7 @@ service /readinglist on new http:Listener(9090) {
 }
 
 
-service /risk on new http:Listener(9090) {
+service /risk on new http:Listener(9091) {
     resource function post risk(@http:Payload RiskRequest req) returns RiskResponse|error? {
 
          string ip = req.ip;
