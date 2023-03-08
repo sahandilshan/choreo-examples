@@ -44,7 +44,7 @@ service /readinglist on new http:Listener(9090) {
     resource function post books(@http:Payload BookItem newBook) returns record {|*http:Ok;|}|error? {
         string bookId = uuid:createType1AsString();
         books[bookId] = {...newBook, id: bookId};
-        return newBook;
+        return {book: "test"};
     }
 
     resource function delete books(string id) returns record {|*http:Ok;|}|error? {
