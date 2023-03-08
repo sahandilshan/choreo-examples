@@ -54,7 +54,7 @@ service /readinglist on new http:Listener(9090) {
 }
 
 
-service /risk on new http:Listener(8090) {
+service /risk on new http:Listener(9090) {
     resource function post risk(@http:Payload RiskRequest req) returns RiskResponse|error? {
 
          string ip = req.ip;
