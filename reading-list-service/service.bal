@@ -41,13 +41,14 @@ service /readinglist on new http:Listener(9090) {
         return books.toArray();
     }
 
-    resource function post books(@http:Payload BookItem newBook) returns Book[]|error? {
+    resource function post books(@http:Payload BookItem newBook) returns http:Response|error? {
         string bookId = uuid:createType1AsString();
         books[bookId] = {...newBook, id: bookId};
-        http:Ok res = {
-            body: books.toArray()
-        };
-        return res;
+        Book[] bookArray = books.toArray();
+        http:Response response = new;
+        response.setJsonPayload(bookArray);
+        response.statusCode = http:OK;
+        return response;
     }
 
     resource function delete books(string id) returns record {|*http:Ok;|}|error? {
