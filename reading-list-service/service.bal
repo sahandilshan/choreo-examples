@@ -41,7 +41,7 @@ service /readinglist on new http:Listener(9090) {
         return books.toArray();
     }
 
-    resource function post books(@http:Payload BookItem newBook) returns error? {
+    resource function post books(@http:Payload BookItem newBook, http:Caller caller) returns error? {
         string bookId = uuid:createType1AsString();
         books[bookId] = {...newBook, id: bookId};
         Book[] bookArray = books.toArray();
