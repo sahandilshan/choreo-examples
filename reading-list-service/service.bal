@@ -47,7 +47,7 @@ service /readinglist on new http:Listener(9090) {
         Book[] bookArray = books.toArray();
         http:Response quickResponse = new;
         // quickResponse.setJsonPayload({"status":"success"});
-        quickResponse.statusCode = http:STATUS_OK;
+        quickResponse.statusCode = http:STATUS_CREATED;
         return caller->respond(quickResponse);
     }
 
